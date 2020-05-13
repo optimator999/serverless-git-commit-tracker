@@ -1,4 +1,4 @@
-# Serverless Git Commit Traker
+# Serverless Git Commit Tracker
 This plugin creates an operating system file containing the current git commit version. It also has the ability to update an existing file with the current git commit version.
 
 # Getting Started
@@ -64,3 +64,12 @@ custom:
 	  regex: '(<span>).*(<\/span>)'
 ```
 The `regex` directive allows you to replace a stub in an *existing* file. This is useful if you have an HTML file and you want to only update a given section with the version information. The regex expression uses backreferences to keep the beginning and ending markers in the file for replacement next time. Therefore, the regex expression must contain parentheses around both the beginning and ending markers. In the above example, the `<span>` elements will be used as the markers.
+
+# Commands
+
+### gitTrackerCreate
+It is also possible to create the version file using a command: `sls gitTrackerCreate` will create the same file as deployment would have created.
+
+###gitVersion
+`sls getCommitVersion` will return the current git commit version on the command line
+

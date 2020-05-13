@@ -11,14 +11,14 @@ class ServerlessPlugin {
     this.serverless = serverless;
     this.options = options;
     this.stage = this.options.stage || this.serverless.service.provider.stage;
-    this.deploymentTracker = this.serverless.service.custom.deploymentTracker;
+    this.deploymentTracker = this.serverless.service.custom.gitCommitTracker;
 
     this.commands = {
       gitTrackerCreate: {
               usage: "Creates a file with git and version information for deployment identification",
               lifecycleEvents: ['set'],
           },
-      gitVersion: {
+      getCommitVersion: {
         usage: "Returns the latest commit version from git",
         lifecycleEvents: ['set'],
       },
@@ -28,7 +28,7 @@ class ServerlessPlugin {
     //  'before:welcome:hello': this.version-file.bind(this),
     "before:package:initialize": this.createVersionFile.bind(this),
     "gitTrackerCreate:set": this.createVersionFile.bind(this),
-    "gitVersion:set": this.getGitVersion.bind(this),
+    "getCommitVersion:set": this.getGitVersion.bind(this),
     "before:offline:start:init": this.createVersionFile.bind(this),
     };
     this.gitCmd = 'git log --name-status HEAD^..HEAD | head -1 | cut -c8-14';

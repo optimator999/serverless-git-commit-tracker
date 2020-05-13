@@ -1,7 +1,21 @@
 {
-  "name": "Serverless Git Version Tracker",
+  "name": "serverless-git-commit-tracker",
   "description": "A serverless plugin for deploying the current git commit version.",
   "version": "0.1.0",
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {},
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/optimator999/serverlss-git-version-tracker.git"
+  },
+  "author": "Scott Nichols",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/optimator999/serverlss-git-version-tracker/issues"
+  },
+  "homepage": "https://github.com/optimator999/serverlss-git-version-tracker#readme"
 }
