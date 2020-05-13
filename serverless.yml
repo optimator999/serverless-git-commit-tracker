@@ -1,0 +1,19 @@
+# serverless.yml
+
+service: testservice
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  region: us-west-1 
+custom:
+    deploymentTracker:
+      location: ./version.txt
+      deployment:
+        - dev
+        - production
+        - qa
+      html: true
+      regex: '(<p>).*(<\/p>)'
+plugins:
+  - ./versionPlugin
