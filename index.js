@@ -18,7 +18,7 @@ class ServerlessPlugin {
               usage: "Creates a file with git and version information for deployment identification",
               lifecycleEvents: ['set'],
           },
-      getCommitVersion: {
+      gitCommitVersion: {
         usage: "Returns the latest commit version from git",
         lifecycleEvents: ['set'],
       },
@@ -28,7 +28,7 @@ class ServerlessPlugin {
     //  'before:welcome:hello': this.version-file.bind(this),
     "before:package:initialize": this.createVersionFile.bind(this),
     "gitTrackerCreate:set": this.createVersionFile.bind(this),
-    "getCommitVersion:set": this.getGitVersion.bind(this),
+    "gitCommitVersion:set": this.getGitVersion.bind(this),
     "before:offline:start:init": this.createVersionFile.bind(this),
     };
     this.gitCmd = 'git log --name-status HEAD^..HEAD | head -1 | cut -c8-14';
@@ -68,9 +68,7 @@ class ServerlessPlugin {
     }).catch(err => {
       git = "Not Installed";
     });
-    
-    this.serverless.cli.log(`git: ${git}`);
-    
+     
     var message = `Git Version: ${git}\nDate: `;
     message += new Date().toLocaleString() + "\n";//.replace(/T/, ' ').replace(/\..+/, '') 
     message += `Stage: ${this.stage}\n`; 
@@ -78,15 +76,11 @@ class ServerlessPlugin {
     //If we want HTML then make the new lines html line breaks
     if (html) message = message.replace(/\n/g,"<br/>");
     
-    console.log(`MESSAGE 2: ${message}`);
-
-    
     return message
   }
   
  async replaceFile(location,message,regex) {
     var cmd = `sed -i '' -E -e 's/${regex}/\\1${message.replace(/\//g,"\\/")}\\2/' ${location}`
-    console.log(cmd);
     await this.runExec(cmd).catch(err => {
       this.serverless.cli.log(`Error in RegEx: ${err}`);
     });
@@ -110,7 +104,7 @@ class ServerlessPlugin {
       if (! skipDeployment) {
         
         var message = await this.createMessage(params.html);
-        this.serverless.cli.log(`Message: ${message}`);
+        //this.serverless.cli.log(`Message: ${message}`);
         
        
         //If we've specified a regex expression then we'll replace that expression in the file. 
