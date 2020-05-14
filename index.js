@@ -36,6 +36,7 @@ class ServerlessPlugin {
   }
 
     
+  //This executes an OS command
   runExec(cmd) {
     return new Promise((resolve, reject) => {
      exec(cmd, (error, stdout, stderr) => {
@@ -69,7 +70,7 @@ class ServerlessPlugin {
       git = "Not Installed";
     });
      
-    var message = `Git Version: ${git}\nDate: `;
+    let message = `Git Version: ${git}\nDate: `;
     message += new Date().toLocaleString() + "\n";//.replace(/T/, ' ').replace(/\..+/, '') 
     message += `Stage: ${this.stage}\n`; 
     
@@ -80,11 +81,19 @@ class ServerlessPlugin {
   }
   
  async replaceFile(location,message,regex) {
-    var cmd = `sed -i '' -E -e 's/${regex}/\\1${message.replace(/\//g,"\\/")}\\2/' ${location}`
-    await this.runExec(cmd).catch(err => {
-      this.serverless.cli.log(`Error in RegEx: ${err}`);
-    });
-  }
+   
+    //read the file
+    let text = fs.readFileSync(location)
+    //Use the regex from serverless.yml to create a new regex with "s" option
+    //(dot matches new line) 
+    let replace_regex = new RegExp(`${regex}`,"s")
+    
+    //replace anchors in the file with the message
+    text = text.toString().replace(replace_regex,`$1${message}$2`);
+    
+    //write the new text back to the file
+    fs.writeFileSync(location, text)
+}
   
   async createVersionFile() {
     let params = this.deploymentTracker;
@@ -103,7 +112,7 @@ class ServerlessPlugin {
       
       if (! skipDeployment) {
         
-        var message = await this.createMessage(params.html);
+        let message = await this.createMessage(params.html);
         //this.serverless.cli.log(`Message: ${message}`);
         
        
