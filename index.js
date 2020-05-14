@@ -109,8 +109,14 @@ class ServerlessPlugin {
        
         //If we've specified a regex expression then we'll replace that expression in the file. 
         //Otherwise we'll just write (overwrite) the file
-        if (params.regex) this.replaceFile(params.location, message, params.regex)
-        else fs.writeFileSync(params.location, message);
+        if (params.regex) {
+          this.serverless.cli.log(`Replacing version file.`);
+          this.replaceFile(params.location, message, params.regex)
+        }
+        else {
+          this.serverless.cli.log(`Creating version file.`);
+          fs.writeFileSync(params.location, message);
+        }
       } 
       else this.serverless.cli.log("Skipping Deployment Tracker");
 
