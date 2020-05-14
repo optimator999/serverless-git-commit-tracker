@@ -1,7 +1,7 @@
 {
   "name": "serverless-git-commit-tracker",
   "description": "A serverless plugin for deploying the current git commit version.",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "dependencies": {},
   "devDependencies": {},
   "main": "index.js",
